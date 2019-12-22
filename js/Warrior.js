@@ -1,5 +1,11 @@
+import * as world from "./World.js";
+import * as graphics from "./GraphicsCommon.js";
+
+export { warriorClass }
+
 // tuning constants
 const PLAYER_MOVE_SPEED = 4.0;
+
 
 function warriorClass() {
   // variables to keep track of position
@@ -29,13 +35,13 @@ function warriorClass() {
   this.reset = function() {
     this.keysHeld = 0;
     if(this.homeX == undefined) {
-      for(var i=0; i<roomGrid.length; i++) {
-        if( roomGrid[i] == TILE_PLAYER) {
-          var tileRow = Math.floor(i/ROOM_COLS);
-          var tileCol = i%ROOM_COLS;
-          this.homeX = tileCol * TILE_W + 0.5*TILE_W;
-          this.homeY = tileRow * TILE_H + 0.5*TILE_H;
-          roomGrid[i] = TILE_GROUND;
+      for(var i=0; i<world.roomGrid.length; i++) {
+        if( world.roomGrid[i] == world.TILE_PLAYER) {
+          var tileRow = Math.floor(i/world.ROOM_COLS);
+          var tileCol = i%world.ROOM_COLS;
+          this.homeX = tileCol * world.TILE_W + 0.5 * world.TILE_W;
+          this.homeY = tileRow * world.TILE_H + 0.5 * world.TILE_H;
+          world.roomGrid[i] = world.TILE_GROUND;
           break; // found it, so no need to keep searching 
         } // end of if
       } // end of for
@@ -54,52 +60,52 @@ function warriorClass() {
 
     if(this.keyHeld_North) {
       nextY -= PLAYER_MOVE_SPEED;
-      moveBorderY = nextY - HALF_TILE_H;
+      moveBorderY = nextY - world.HALF_TILE_H;
     }
     if(this.keyHeld_East) {
       nextX += PLAYER_MOVE_SPEED;
-      moveBorderX = nextX + HALF_TILE_W;
+      moveBorderX = nextX + world.HALF_TILE_W;
     }
     if(this.keyHeld_South) {
       nextY += PLAYER_MOVE_SPEED;
-      moveBorderY = nextY + HALF_TILE_H;
+      moveBorderY = nextY + world.HALF_TILE_H;
     }
     if(this.keyHeld_West) {
       nextX -= PLAYER_MOVE_SPEED;
-      moveBorderX = nextX - HALF_TILE_W;
+      moveBorderX = nextX - world.HALF_TILE_W;
     }
     
-    var walkIntoTileIndex = getTileIndexAtPixelCoord(moveBorderX,moveBorderY);
-    var walkIntoTileType = TILE_WALL;
+    var walkIntoTileIndex = world.getTileIndexAtPixelCoord(moveBorderX,moveBorderY);
+    var walkIntoTileType = world.TILE_WALL;
     
     if( walkIntoTileIndex != undefined) {
-      walkIntoTileType = roomGrid[walkIntoTileIndex];
+      walkIntoTileType = world.roomGrid[walkIntoTileIndex];
     }
     
     switch( walkIntoTileType ) {
-      case TILE_GROUND:
+      case world.TILE_GROUND:
         this.x = nextX;
         this.y = nextY;
         break;
-      case TILE_GOAL:
+      case world.TILE_GOAL:
         document.getElementById("debugText").innerHTML = this.myName + " won";
         this.reset();
         break;
-      case TILE_DOOR:
+      case world.TILE_DOOR:
         if(this.keysHeld > 0) {
           this.keysHeld--; // one less key
           document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
 
-          roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove door
+          world.roomGrid[walkIntoTileIndex] = world.TILE_GROUND; // remove door
         }
         break;
-      case TILE_KEY:
+      case world.TILE_KEY:
         this.keysHeld++; // gain key
         document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
 
-        roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove key
+        world.roomGrid[walkIntoTileIndex] = world.TILE_GROUND; // remove key
         break;
-      case TILE_WALL:
+      case world.TILE_WALL:
       default:
         // any other tile type number was found... do nothing, for now
         break;
@@ -107,7 +113,7 @@ function warriorClass() {
   }
   
   this.draw = function() {
-    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0.0 );
+    graphics.drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0.0 );
   }
 
 } // end of class

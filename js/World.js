@@ -1,8 +1,14 @@
-// world, room, and tile constants, variables
-const ROOM_COLS = 16;
-const ROOM_ROWS = 12;
+export {
+  drawRoom, getTileIndexAtPixelCoord
+};
+import { canvasContext } from "./GraphicsCommon.js";
+import { tilePics } from "./ImageLoading.js";
 
-var roomGrid =
+// world, room, and tile constants, variables
+export const ROOM_COLS = 16;
+export const ROOM_ROWS = 12;
+
+export var roomGrid =
     [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 5, 0, 1, 1, 1, 1,
       1, 0, 4, 0, 4, 0, 1, 0, 2, 0, 1, 0, 1, 4, 4, 1,
@@ -16,18 +22,18 @@ var roomGrid =
       1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-const TILE_W = 50;
-const TILE_H = 50;
+export const TILE_W = 50;
+export const TILE_H = 50;
 
-const HALF_TILE_W = TILE_W * 0.5;
-const HALF_TILE_H = TILE_H * 0.5;
+export const HALF_TILE_W = TILE_W * 0.5;
+export const HALF_TILE_H = TILE_H * 0.5;
 
-const TILE_GROUND = 0;
-const TILE_WALL = 1;
-const TILE_PLAYER = 2;
-const TILE_GOAL = 3;
-const TILE_KEY = 4;
-const TILE_DOOR = 5;
+export const TILE_GROUND = 0;
+export const TILE_WALL = 1;
+export const TILE_PLAYER = 2;
+export const TILE_GOAL = 3;
+export const TILE_KEY = 4;
+export const TILE_DOOR = 5;
 
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);

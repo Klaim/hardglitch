@@ -1,12 +1,20 @@
+import * as world from "./World.js";
+
+export { loadImages, playerPic, tilePics };
+
+
 var playerPic=document.createElement("img");
 var tilePics = [];
 
 var picsToLoad = 0;
 
+var on_loading_done;
+
+
 function countLoadedImageAndLaunchIfReady() {
   picsToLoad--;
   if(picsToLoad == 0) { // last image loaded?
-    loadingDoneSoStartGame();
+    on_loading_done();
   }
 }
 
@@ -20,16 +28,18 @@ function loadImageForTileCode(tileCode, fileName) {
   beginLoadingImage(tilePics[tileCode],fileName);
 }
 
-function loadImages() {
+function loadImages(on_done_handler) {
+
+  on_loading_done = on_done_handler;
 
   var imageList = [
     {varName:playerPic, theFile:"warrior.png"},
     
-    {tileType:TILE_GROUND, theFile:"world_ground.png"},
-    {tileType:TILE_WALL, theFile:"world_wall.png"},
-    {tileType:TILE_GOAL, theFile:"world_goal.png"},
-    {tileType:TILE_KEY, theFile:"world_key.png"},
-    {tileType:TILE_DOOR, theFile:"world_door.png"}
+    {tileType:world.TILE_GROUND, theFile:"world_ground.png"},
+    {tileType:world.TILE_WALL, theFile:"world_wall.png"},
+    {tileType:world.TILE_GOAL, theFile:"world_goal.png"},
+    {tileType:world.TILE_KEY, theFile:"world_key.png"},
+    {tileType:world.TILE_DOOR, theFile:"world_door.png"}
     ];
 
   picsToLoad = imageList.length;
@@ -43,3 +53,5 @@ function loadImages() {
   } // end of for imageList
 
 } // end of function loadImages
+
+

@@ -1,5 +1,5 @@
-import * as world from "./World.js";
-import * as graphics from "./GraphicsCommon.js";
+import * as world from "./world.js";
+import * as graphics from "./system/graphics.js";
 
 export { warriorClass }
 
@@ -31,7 +31,7 @@ function warriorClass() {
     this.myName = whichName;
     this.reset();
   }
-  
+
   this.reset = function() {
     this.keysHeld = 0;
     if(this.homeX == undefined) {
@@ -42,16 +42,16 @@ function warriorClass() {
           this.homeX = tileCol * world.TILE_W + 0.5 * world.TILE_W;
           this.homeY = tileRow * world.TILE_H + 0.5 * world.TILE_H;
           world.roomGrid[i] = world.TILE_GROUND;
-          break; // found it, so no need to keep searching 
+          break; // found it, so no need to keep searching
         } // end of if
       } // end of for
     } // end of if position not saved yet
-    
+
     this.x = this.homeX;
     this.y = this.homeY;
 
   } // end of reset
-  
+
   this.move = function() {
     var nextX = this.x;
     var nextY = this.y;
@@ -74,14 +74,14 @@ function warriorClass() {
       nextX -= PLAYER_MOVE_SPEED;
       moveBorderX = nextX - world.HALF_TILE_W;
     }
-    
+
     var walkIntoTileIndex = world.getTileIndexAtPixelCoord(moveBorderX,moveBorderY);
     var walkIntoTileType = world.TILE_WALL;
-    
+
     if( walkIntoTileIndex != undefined) {
       walkIntoTileType = world.roomGrid[walkIntoTileIndex];
     }
-    
+
     switch( walkIntoTileType ) {
       case world.TILE_GROUND:
         this.x = nextX;
@@ -111,7 +111,7 @@ function warriorClass() {
         break;
     }
   }
-  
+
   this.draw = function() {
     graphics.drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0.0 );
   }

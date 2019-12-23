@@ -1,8 +1,8 @@
 export {
   drawRoom, getTileIndexAtPixelCoord
 };
-import { canvasContext } from "./GraphicsCommon.js";
-import { tilePics } from "./ImageLoading.js";
+import { canvasContext } from "./system/graphics.js";
+import { tilePics } from "./resources.js";
 
 // world, room, and tile constants, variables
 export const ROOM_COLS = 16;
@@ -42,7 +42,7 @@ function roomTileToIndex(tileCol, tileRow) {
 function getTileIndexAtPixelCoord(pixelX,pixelY) {
   var tileCol = pixelX / TILE_W;
   var tileRow = pixelY / TILE_H;
-  
+
   // we'll use Math.floor to round down to the nearest whole number
   tileCol = Math.floor( tileCol );
   tileRow = Math.floor( tileRow );
@@ -53,7 +53,7 @@ function getTileIndexAtPixelCoord(pixelX,pixelY) {
      document.getElementById("debugText").innerHTML = "out of bounds:"+pixelX+","+pixelY;
      return undefined;
   }
-  
+
   var tileIndex = roomTileToIndex(tileCol, tileRow);
   return tileIndex;
 }
@@ -68,11 +68,11 @@ function drawRoom() {
   var tileIndex = 0;
   var tileLeftEdgeX = 0;
   var tileTopEdgeY = 0;
-  
+
   for(var eachRow=0; eachRow<ROOM_ROWS; eachRow++) { // deal with one row at a time
-    
+
     tileLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
-    
+
     for(var eachCol=0; eachCol<ROOM_COLS; eachCol++) { // left to right in each row
 
       var tileTypeHere = roomGrid[ tileIndex ]; // getting the tile code for this index
@@ -80,13 +80,13 @@ function drawRoom() {
         canvasContext.drawImage(tilePics[TILE_GROUND], tileLeftEdgeX, tileTopEdgeY);
       }
       canvasContext.drawImage(tilePics[tileTypeHere], tileLeftEdgeX, tileTopEdgeY);
-      
+
       tileIndex++; // increment which index we're going to next check for in the room
       tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
 
     } // end of for eachCol
-    
+
     tileTopEdgeY += TILE_H; // jump horizontal draw position down by one full tile height
-    
-  } // end of for eachRow    
+
+  } // end of for eachRow
 } // end of drawRoom()

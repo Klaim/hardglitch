@@ -1,9 +1,9 @@
 // save the canvas for dimensions, and its 2d context for drawing to it
-import * as graphics from "./GraphicsCommon.js";
-import * as images from "./ImageLoading.js";
-import * as world from "./World.js";
-import { initInput } from "./Input.js";
-import { warriorClass } from "./Warrior.js";
+import * as graphics from "./system/graphics.js";
+import { initInput } from "./system/input.js";
+import * as resources from "./resources.js";
+import * as world from "./world.js";
+import { warriorClass } from "./warrior.js";
 
 var p1 = new warriorClass();
 
@@ -15,9 +15,9 @@ function loadingDoneSoStartGame() {
       moveEverything();
       drawEverything();
     }, 1000/framesPerSecond);
-  
-  p1.init(images.playerPic, "Blue");
-  initInput(p1);  
+
+  p1.init(resources.playerPic, "Blue");
+  initInput(p1);
   console.log("GAME READY");
 }
 
@@ -27,11 +27,11 @@ function moveEverything() {
 
 function drawEverything() {
   world.drawRoom();
-  
+
   p1.draw();
 }
 
 window.onload = function() {
-  graphics.initialize();  
-  images.loadImages(loadingDoneSoStartGame);
+  graphics.initialize();
+  resources.loadImages(loadingDoneSoStartGame);
 }

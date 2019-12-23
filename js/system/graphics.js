@@ -1,9 +1,9 @@
 
 
-export { 
-  initialize, 
-  colorRect, 
-  colorCircle, 
+export {
+  initialize,
+  colorRect,
+  colorCircle,
   drawBitmapCenteredAtLocationWithRotation,
   canvasContext
 };

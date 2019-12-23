@@ -1,4 +1,4 @@
-import * as world from "./World.js";
+import * as world from "./world.js";
 
 export { loadImages, playerPic, tilePics };
 
@@ -34,7 +34,7 @@ function loadImages(on_done_handler) {
 
   var imageList = [
     {varName:playerPic, theFile:"warrior.png"},
-    
+
     {tileType:world.TILE_GROUND, theFile:"world_ground.png"},
     {tileType:world.TILE_WALL, theFile:"world_wall.png"},
     {tileType:world.TILE_GOAL, theFile:"world_goal.png"},

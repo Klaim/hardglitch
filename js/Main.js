@@ -8,7 +8,7 @@ import { warriorClass } from "./warrior.js";
 var p1 = new warriorClass();
 
 
-function loadingDoneSoStartGame() {
+function start() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
   setInterval(function() {
@@ -33,5 +33,5 @@ function drawEverything() {
 
 window.onload = function() {
   graphics.initialize();
-  resources.loadImages(loadingDoneSoStartGame);
+  resources.loadImages(start);
 }

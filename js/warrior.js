@@ -1,5 +1,6 @@
 import * as world from "./world.js";
 import * as graphics from "./system/graphics.js";
+import * as debug from "./debug.js";
 
 export { warriorClass }
 
@@ -88,20 +89,20 @@ function warriorClass() {
         this.y = nextY;
         break;
       case world.TILE_GOAL:
-        document.getElementById("debugText").innerHTML = this.myName + " won";
+        debug.setText(this.myName + " won");
         this.reset();
         break;
       case world.TILE_DOOR:
         if(this.keysHeld > 0) {
           this.keysHeld--; // one less key
-          document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
+          debug.setText("Keys: "+this.keysHeld);
 
           world.roomGrid[walkIntoTileIndex] = world.TILE_GROUND; // remove door
         }
         break;
       case world.TILE_KEY:
         this.keysHeld++; // gain key
-        document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
+        debug.setText("Keys: "+this.keysHeld);
 
         world.roomGrid[walkIntoTileIndex] = world.TILE_GROUND; // remove key
         break;

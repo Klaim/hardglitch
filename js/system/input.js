@@ -1,3 +1,7 @@
+// This file contains code that handle input and provide 
+// tools to translate input to actions.
+
+
 export {
   initInput
 };

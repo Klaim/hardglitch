@@ -1,3 +1,8 @@
+// This file contains the graphic system implementation.
+// It provides utilities to display anything graphic.
+
+
+
 
 
 export {

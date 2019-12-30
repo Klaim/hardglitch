@@ -1,3 +1,4 @@
-This directory will only contain the code for the subsystems
+This directory will only contain the code for the systems
 necessary to display, hear handle input of the game.
-No game-specific code will appear here.
+Avoid game-specific code here, if you can. ^^
+

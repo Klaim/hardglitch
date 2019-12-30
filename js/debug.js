@@ -1,3 +1,4 @@
+// This file contains debug utilities for working with this game.
 
 export { setText };
 

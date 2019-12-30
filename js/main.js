@@ -1,3 +1,6 @@
+// This file contains the main loop and initialization code for this game.
+
+
 // save the canvas for dimensions, and its 2d context for drawing to it
 import * as graphics from "./system/graphics.js";
 import { initInput } from "./system/input.js";
@@ -18,7 +21,7 @@ function start() {
 
   p1.init(resources.playerPic, "Blue");
   initInput(p1);
-  console.log("GAME READY");
+  console.log("GAME READY - STARTED");
 }
 
 function moveEverything() {

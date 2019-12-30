@@ -1,3 +1,6 @@
+// This file contains the actual world description of the game.
+// We will model (or implement) the world concepts as described in core/world-concepts.js 
+
 export {
   drawRoom, getTileIndexAtPixelCoord
 };

@@ -1,3 +1,7 @@
+// This file contains the code loading the resources required by the game.
+// It provides functions to load the resources required when necessary
+// without blocking the main loop.
+
 import * as world from "./world.js";
 
 export { loadImages, playerPic, tilePics };

@@ -15,6 +15,27 @@ var p1 = new warriorClass();
 let world = new concepts.World();
 let turn_sequence = execute_turns_until_players_turn(world);
 
+class Player extends concepts.Agent {
+};
+
+class Moved extends concepts.Event {
+  constructor(body){
+    this.body = body;
+    super("");
+  }
+};
+
+class Waited extends concepts.Event {};
+
+class MoveRight extends concepts.Action {
+  execute(world, agent){
+    console.assert(agent.body);
+    agent.body.x = agent.body.x + 10;
+    return [ new Moved( agent.body ) ];
+  }
+};
+
+
 
 
 function start() {

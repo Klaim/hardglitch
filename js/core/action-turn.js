@@ -10,13 +10,13 @@ import { rotate_array } from "../system/utility.js";
 // Returns a generator of sequence of events (produced through the turns of the different agents).
 //
 function* execute_turns_until_players_turn(world) {
-    console.assert(typeof world === concept.world);
+    console.assert(world instanceof concept.World);
 
     let looping_agent_sequence = loop_all_agents();
     let events = []; // TODO: format of events
 
     for(let agent in looping_agent_sequence){
-        console.assert(typeof agent === concept.Agent);
+        console.assert(agent instanceof concept.Agent);
 
         let possible_actions = world.gather_possible_actions_from_rules(agent);
 
@@ -29,7 +29,7 @@ function* execute_turns_until_players_turn(world) {
         }
 
         // Apply the selected action.
-        let action_events = action.execute(world);
+        let action_events = action.execute(world, agent);
         events.push(...action_events);
 
         // Update the world according to it's rules.
@@ -39,8 +39,8 @@ function* execute_turns_until_players_turn(world) {
 }
 
 function *loop_all_agents(world){
-    console.assert(typeof world === concept.world);
-    while(length(world.agents) > 0){
+    console.assert(world instanceof concept.World);
+    while(world.agents.length > 0){
         yield world.agents[0];
         rotate_array(world.agents);
     }

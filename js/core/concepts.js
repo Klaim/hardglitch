@@ -9,6 +9,7 @@
 
 export {
     World,
+    Event,
     Action,
     Agent,
     Object,
@@ -28,7 +29,7 @@ class Action {
 
     // Apply the action, transform the world.
     // Must return events corresponding to what happened.
-    execute(world){
+    execute(world, agent){
 
     }
 };
@@ -36,7 +37,7 @@ class Action {
 // Represents the record of something that happened in the past.
 class Event{
     Event(event_type){
-        this.type = event_type;
+        this.event_type = event_type;
     }
 };
 
@@ -50,15 +51,10 @@ class Agent {
     objects = [];
     body = null; // TODO: consider handling more than one body for an agent (like a big boss?)
 
-    is_player = false; // True if the action should be decided by a player.
-
-    // Decides what to do for this turn, returns an Action or null for no action.
+    // Decides what to do for this turn, returns an Action or null if players must decide.
     decide_next_action(possible_action_list){
-
+        return null;
     }
-
-
-
 };
 
 // Rules are transformations and checks that apply all the time as long
@@ -105,6 +101,14 @@ class World
     objects = []; // Objects that are in the space of the world, not in other objects.
     rules = [];
 
+    World(){
+
+    }
+
+    add_rule(new_rule){
+        console.assert(new_rule instanceof Rule);
+        this.rules.push(new_rule);
+    }
 
     set_player_action(action){
         console.assert(action);
@@ -114,6 +118,7 @@ class World
 
     // Returns a set of possible actions according to the current rules, for the specified agent.
     gather_possible_actions_from_rules(agent){
+        console.assert(agent instanceof Agent);
         let possible_actions = [];
         for(let rule in this.rules){
             possible_actions.push(...(rule.get_actions_for(agent, this)));

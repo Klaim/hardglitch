@@ -13,12 +13,14 @@ function* execute_turns_until_players_turn(world) {
     console.assert(typeof world === concept.world);
 
     let looping_agent_sequence = loop_all_agents();
-    let events = [];
+    let events = []; // TODO: format of events
 
     for(let agent in looping_agent_sequence){
         console.assert(typeof agent === concept.Agent);
 
-        let action = agent.decide_next_action();
+        let possible_actions = world.gather_possible_actions_from_rules(agent);
+
+        let action = agent.decide_next_action(possible_actions);
         if(!action){ // No decision taken? Only players can hesitate!!!!
             // This is a player: let the player decide what to do (they will store the action in the world state).
             yield events; // Give back the control and the list of events done since last turn.
@@ -26,9 +28,13 @@ function* execute_turns_until_players_turn(world) {
             action = world.player_action; // Extract the player action from the world state.
         }
 
-        // TODO: apply rules
-        // TODO: apply the action
+        // Apply the selected action.
+        let action_events = action.execute(world);
+        events.push(...action_events);
 
+        // Update the world according to it's rules.
+        let rules_events = world.apply_rules();
+        events.push(...rules_events);
     }
 }
 
@@ -39,3 +45,6 @@ function *loop_all_agents(world){
         rotate_array(world.agents);
     }
 }
+
+
+

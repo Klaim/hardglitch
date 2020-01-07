@@ -27,10 +27,19 @@ class Action {
     }
 
     // Apply the action, transform the world.
+    // Must return events corresponding to what happened.
     execute(world){
 
     }
 };
+
+// Represents the record of something that happened in the past.
+class Event{
+    Event(event_type){
+        this.type = event_type;
+    }
+};
+
 
 // Agents are entities that can take decitions and produce actions.
 class Agent {
@@ -44,7 +53,7 @@ class Agent {
     is_player = false; // True if the action should be decided by a player.
 
     // Decides what to do for this turn, returns an Action or null for no action.
-    decide_next_action(){
+    decide_next_action(possible_action_list){
 
     }
 
@@ -62,6 +71,13 @@ class Rule {
     // do, including the ones related to the environment.
     get_actions_for(agent, world){
 
+    }
+
+    // Update the world according to this rule.
+    // Called once per agent after they are finished with their action (players too).
+    // Returns a sequence of events resulting from changing the world.
+    update_world_after_turn(world){
+        return [];
     }
 
 };
@@ -90,9 +106,29 @@ class World
     rules = [];
 
 
-    push_player_action(action){
+    set_player_action(action){
         console.assert(action);
+        // TODO: add some checks?
         this.player_action = action;
+    }
+
+    // Returns a set of possible actions according to the current rules, for the specified agent.
+    gather_possible_actions_from_rules(agent){
+        let possible_actions = [];
+        for(let rule in this.rules){
+            possible_actions.push(...(rule.get_actions_for(agent, this)));
+        }
+        return possible_actions;
+    }
+
+    // Apply all rules to update this world according to them.
+    // Should be called after each turn of an agent.
+    apply_rules(){
+        let events = [];
+        for(let rule in this.rules){
+            events.push(...(rule.update_world_after_turn(this)));
+        }
+        return events;
     }
 };
 

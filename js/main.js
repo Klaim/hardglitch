@@ -15,6 +15,8 @@ var p1 = new warriorClass();
 let world = new concepts.World();
 let turn_sequence = execute_turns_until_players_turn(world);
 
+
+
 function start() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
@@ -29,7 +31,7 @@ function start() {
 }
 
 function moveEverything() {
-  p1.move();
+  // p1.move();
 }
 
 function drawEverything() {

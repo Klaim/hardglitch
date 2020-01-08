@@ -21,23 +21,17 @@ export {
 // world's rules.
 class Action {
 
-    Action(action_type){
-        console.assert(action_type, "Actions must have a type!");
-        this._type = action_type;
-        action_type.setup(this);
-    }
-
     // Apply the action, transform the world.
     // Must return events corresponding to what happened.
     execute(world, agent){
-
+        return [];
     }
 };
 
 // Represents the record of something that happened in the past.
 class Event{
-    Event(event_type){
-        this.event_type = event_type;
+    Event(agent){
+        this.agent = agent;
     }
 };
 
@@ -52,8 +46,10 @@ class Agent {
     body = null; // TODO: consider handling more than one body for an agent (like a big boss?)
 
     // Decides what to do for this turn, returns an Action or null if players must decide.
-    decide_next_action(possible_action_list){
-        return null;
+    // `possible_actions` is a map of { "ActionName" : ActionType } possibles.
+    // Therefore one could just instantiate an action with `new possible_actions["Move"]` etc.
+    decide_next_action(possible_actions){
+        return null; // By default, let the player decide.
     }
 };
 
@@ -62,11 +58,11 @@ class Agent {
 class Rule {
     // TODO: add on_something for each case we want to apply rules to.
 
-    // Returns a list of actions this rule allows to the agent.
+    // Returns a map of { "action name" : ActionType } this rule allows to the agent.
     // This will be called to get the full list of actions an agent can
     // do, including the ones related to the environment.
     get_actions_for(agent, world){
-
+        return {};
     }
 
     // Update the world according to this rule.
@@ -86,11 +82,26 @@ class Object {
 
 };
 
+// We assume that the world is made of 2D grids.
+// This position is one square of that grid, so all the values are integers.
+class Position { 
+    constructor(x = 0, y = 0){
+        this.x = x;
+        this.y = y;
+    }
+    // TODO: add useful constants and functions here.
+
+    get west() { return new Position( this.x - 1, this.y ); }
+    get east() { return new Position( this.x + 1, this.y ); }
+    get north() { return new Position( this.x, this.y - 1 ); }
+    get south() { return new Position( this.x, this.y + 1 ); }
+};
+
 // Bodies are special entities that have "physical" existence,
 // like objects, but they can move by themselves.
 // Most of the time they are owned by agents.
 class Body { // TODO: consider inheriting from Object?
-
+    position = new Position();
 };
 
 // This is the world as known by the game.
@@ -100,6 +111,7 @@ class World
     agents = [];
     objects = []; // Objects that are in the space of the world, not in other objects.
     rules = [];
+    player_action = null; // TODO: try to find a better way to "pass" the player action to the turn solver.
 
     World(){
 
@@ -119,9 +131,9 @@ class World
     // Returns a set of possible actions according to the current rules, for the specified agent.
     gather_possible_actions_from_rules(agent){
         console.assert(agent instanceof Agent);
-        let possible_actions = [];
+        let possible_actions = {};
         for(let rule in this.rules){
-            possible_actions.push(...(rule.get_actions_for(agent, this)));
+            possible_actions.assign(rule.get_actions_for(agent, this));
         }
         return possible_actions;
     }

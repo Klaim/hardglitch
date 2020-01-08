@@ -9,3 +9,10 @@ function rotate_array(array, count = 1){
         --count;
     }
 }
+
+// Return a random element of the provided array.
+function random_sample(array){
+    if(array.length == 0)
+        return null;
+    return array[ Math.floor( Math.random() * array.length ) ];
+}

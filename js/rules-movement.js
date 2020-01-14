@@ -13,11 +13,11 @@ class Moved extends concepts.Event {
 
 
 class Move extends concepts.Action {
-    
+
     constructor(new_position){
         this.new_position;
     }
-    
+
     execute(world, agent) {
         console.assert(agent.body);
         let initial_pos = agent.body.position;
@@ -28,6 +28,7 @@ class Move extends concepts.Action {
 
 
 // Rule: agents with a body can move (depending on what is arround).
+// Movement can be done only 1 square per turn.
 class MovementRules extends concepts.Rule {
 
     get_actions_for(agent, world) {

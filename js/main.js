@@ -5,7 +5,6 @@
 import * as graphics from "./system/graphics.js";
 import { initInput } from "./system/input.js";
 import * as resources from "./resources.js";
-import * as world from "./world.js";
 import { warriorClass } from "./warrior.js";
 import { execute_turns_until_players_turn } from "./core/action-turn.js";
 import * as concepts from "./core/concepts.js";
@@ -20,7 +19,7 @@ function start() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
   setInterval(function() {
-      moveEverything();
+      updateEverything();
       drawEverything();
     }, 1000/framesPerSecond);
 
@@ -29,12 +28,11 @@ function start() {
   console.log("GAME READY - STARTED");
 }
 
-function moveEverything() {
+function updateEverything() {
   // p1.move();
 }
 
 function drawEverything() {
-  world.drawRoom();
 
   p1.draw();
 }

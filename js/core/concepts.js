@@ -12,8 +12,9 @@ export {
     Event,
     Action,
     Agent,
-    Object,
     Rule,
+    Object,
+    Body,
 };
 
 
@@ -84,7 +85,7 @@ class Object {
 
 // We assume that the world is made of 2D grids.
 // This position is one square of that grid, so all the values are integers.
-class Position { 
+class Position {
     constructor(x = 0, y = 0){
         this.x = x;
         this.y = y;
@@ -108,8 +109,9 @@ class Body { // TODO: consider inheriting from Object?
 // It's mainly a big container of every entities that makes the world.
 class World
 {
-    agents = [];
-    objects = []; // Objects that are in the space of the world, not in other objects.
+    agents = [];    // Might or might not be associated with one or several bodies.
+    objects = [];   // Objects that are in the space of the world, not in other objects.
+    bodies = [];    // Bodies are always in the space of the world.
     rules = [];
     player_action = null; // TODO: try to find a better way to "pass" the player action to the turn solver.
 
@@ -117,9 +119,25 @@ class World
 
     }
 
-    add_rule(new_rule){
-        console.assert(new_rule instanceof Rule);
-        this.rules.push(new_rule);
+    // Automatically sort out how to store the thing being added to this world.
+    add(thing){
+        if(thing instanceof Object){
+            this.objects.push(thing);
+            // TODO: add here to some spatial partitionning system
+        }
+        else if(thing instanceof Agent){
+            this.agents.push(thing);
+        }
+        else if(thing instanceof Body){
+            this.bodies.push(thing);
+            // TODO: add here to some spatial partitioning system
+        }
+        else if(thing instanceof Rule){
+            this.rules.push(thing);
+        }
+        else {
+            throw "Unknown type : " + typeof thing;
+        }
     }
 
     set_player_action(action){

@@ -4,11 +4,11 @@
 // save the canvas for dimensions, and its 2d context for drawing to it
 import * as graphics from "./system/graphics.js";
 import { Transform } from "./system/spatial.js";
-//import { execute_turns_until_players_turn } from "./core/action-turn.js";
-//import * as concepts from "./core/concepts.js";
+import { execute_turns_until_players_turn } from "./core/action-turn.js";
+import * as concepts from "./core/concepts.js";
 
-//let world = new concepts.World();
-//let turn_sequence = execute_turns_until_players_turn(world);
+let world = new concepts.World();
+let turn_sequence = execute_turns_until_players_turn(world);
 
 
 function start() {

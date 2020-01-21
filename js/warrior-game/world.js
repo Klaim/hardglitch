@@ -1,10 +1,10 @@
 // This file contains the actual world description of the game.
-// We will model (or implement) the world concepts as described in core/world-concepts.js 
+// We will model (or implement) the world concepts as described in core/world-concepts.js
 
 export {
   drawRoom, getTileIndexAtPixelCoord
 };
-import { canvasContext } from "./system/graphics.js";
+import { canvasContext } from "../system/graphics.js";
 import { tilePics } from "./resources.js";
 
 // world, room, and tile constants, variables

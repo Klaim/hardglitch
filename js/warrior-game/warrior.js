@@ -1,6 +1,6 @@
-import * as world from "../world.js";
 import * as graphics from "../system/graphics.js";
 import * as debug from "../debug.js";
+import * as world from "./world.js";
 
 export { warriorClass }
 

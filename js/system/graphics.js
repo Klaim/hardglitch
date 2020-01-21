@@ -4,6 +4,7 @@
 
 export {
   initialize,
+  clear,
   Sprite,
 };
 
@@ -13,32 +14,28 @@ var canvas, canvasContext;
 
 class Sprite {
   transform = new spatial.Transform();
-  size = new spatial.Rectangle();
-  source_image = null; // If null, draw a colored rectangle
+  size = new spatial.Vector2({ x:10.0, y: 10.0 });
+  source_image = undefined; // If null, draw a colored rectangle
   source_transform = new spatial.Transform(); // not sure we'll need this one in the end
-  source_size = new spatial.Rectangle();
+  source_size = new spatial.Vector2({ x:1.0, y: 1.0 }); // ?
 
-  constructor(image=null, transform=new spatial.Transform()){
-    this.source_image = image;
-    this.transform = transform;
-  }
+  get position() { return this.transform.position; }
+  set position(new_position) { this.transform.position = new_position; }
 
   draw(){ // TODO: take a camera into account
-    // TODO: complete by using all the sprite info
-    canvasContext.save();
-    canvasContext.translate(this.transform.posittion.x, this.transform.posittion.y);
-    canvasContext.rotate(this.transform.orientation.degrees); // TODO: check if t's radian or degrees
     if(this.source_image){
+      // TODO: complete by using all the sprite info
+      canvasContext.save();
+      canvasContext.translate(this.transform.position.x, this.transform.position.y);
+      canvasContext.rotate(this.transform.orientation.degrees); // TODO: check if t's radian or degrees
       // canvasContext.drawImage(this.source_image,this.size.width,this.size.height);
       canvasContext.drawImage(this.source_image, this.source_image.width, this.source_image.height); // TODO: replace by specified size
+      canvasContext.restore();
     } else {
       // We don't have an image so we draw a colored rectangle instead.
-      const empty_sprite_color = "0x000000"; // TODO: use a proper color, maybe fushia
-      colorRect(this.size.top_left.x, this.size.top_left.y,
-        this.size.bottom_right.x, this.size.bottom_right.y,
-        empty_sprite_color);
+      const empty_sprite_color = "grey"; // TODO: use a proper color, maybe fushia
+      colorRect(new spatial.Rectangle( { position: this.position, size: this.size } ));
     }
-    canvasContext.restore();
   }
 };
 
@@ -50,9 +47,10 @@ function initialize(){
   canvasContext = canvas.getContext('2d');
 }
 
-function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+function colorRect(rectangle, fillColor) {
   canvasContext.fillStyle = fillColor;
-  canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+  canvasContext.fillRect(rectangle.position.x, rectangle.position.y,
+    rectangle.width, rectangle.height);
 }
 
 function colorCircle(centerX, centerY, radius, fillColor) {
@@ -70,3 +68,6 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
   canvasContext.restore(); // undo the translation movement and rotation since save()
 }
 
+function clear(){
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+}

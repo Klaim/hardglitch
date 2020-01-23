@@ -6,6 +6,7 @@ import * as graphics from "./system/graphics.js";
 import { Transform } from "./system/spatial.js";
 import { execute_turns_until_players_turn } from "./core/action-turn.js";
 import * as concepts from "./core/concepts.js";
+import * as assets from "./assets.js";
 
 let world = new concepts.World();
 let turn_sequence = execute_turns_until_players_turn(world);
@@ -25,7 +26,7 @@ function start() {
 let sprite = new graphics.Sprite();
 sprite.position.x = 200.0;
 sprite.position.y = 100.0;
-
+sprite.source_image = assets.images.player;
 let some_value = -99999.0;
 
 function updateEverything() {

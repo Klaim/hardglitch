@@ -16,3 +16,4 @@ function random_sample(array){
         return null;
     return array[ Math.floor( Math.random() * array.length ) ];
 }
+

@@ -23,11 +23,21 @@ function start() {
   console.log("GAME READY - STARTED");
 }
 
+var game_assets = {
+  images : {
+    asset_loader : assets.dummy_loader,
+    player: "./images/warrior.png"
+  }
+};
+
 let sprite = new graphics.Sprite();
-sprite.position.x = 200.0;
-sprite.position.y = 100.0;
-sprite.source_image = assets.images.player;
 let some_value = -99999.0;
+
+function test_init(){
+  sprite.position.x = 200.0;
+  sprite.position.y = 100.0;
+  sprite.source_image = game_assets.images.player;
+}
 
 function updateEverything() {
   some_value += 0.01;
@@ -41,7 +51,8 @@ function drawEverything() {
   sprite.draw();
 }
 
-window.onload = function() {
+window.onload = async function() {
   graphics.initialize();
+  game_assets = await assets.load_assets(game_assets);
   start();
 }

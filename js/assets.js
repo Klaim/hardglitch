@@ -56,16 +56,16 @@ function load_assets(assets_desc){
     }
 
     return Promise.all(promises) // Wait for all the loadings to be done.
-    .then((all_loaded_assets)=>{ // We managed to load all the assets.
-        // Merge all resulting objects together.
-        let all_assets = {};
-        all_loaded_assets.forEach(asset_data => {
-            all_assets = Object.assign(all_assets, asset_data);
+        .then((all_loaded_assets)=>{ // We managed to load all the assets.
+            // Merge all resulting objects together to form one object.
+            let all_assets = {};
+            all_loaded_assets.forEach(asset_data => {
+                all_assets = Object.assign(all_assets, asset_data);
+            });
+            return all_assets;
+        },(reason)=>{ // if there is any error
+            throw "Failed to load assets: " + reason;
         });
-        return all_assets;
-    },(reason)=>{ // if there is any error
-        throw "Failed to load assets: " + reason;
-    });
 }
 
 function dummy_loader(group_name, name, path){
@@ -92,3 +92,4 @@ function image_loader(group_name, name, path){
         img.src = path; // Starts the loading.
     });
 }
+

@@ -23,7 +23,7 @@ function start() {
   console.log("GAME READY - STARTED");
 }
 
-var game_assets = {
+var game_assets = { // Each path in this object will be replaced by an actual asset.
   images : {
     asset_loader : assets.image_loader,
     player: "./images/warrior.png"

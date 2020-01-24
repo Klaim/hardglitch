@@ -2,6 +2,7 @@
 export {
     load_assets,
     dummy_loader,
+    image_loader,
 }
 
 // Takes an object that looks like this:
@@ -25,11 +26,10 @@ export {
 // let sprite = new Sprite( my_assets.images.image_a );
 //
 // Each loader function must be of the form (and return the same structure):
-//   function loader(path) { // Probably needs to be async if it can load in parallel.
-//
+//   function loader(group_name, name, path) {
 // And it must return a Promise with a result value object looking like this:
 //    {
-//      myloader: { // must have the name of the group of assets
+//      "group_name": { // must have the name of the group of assets
 //       "asset_name": new Asset()  // name of asset : the loaded asset
 //      }
 //    };
@@ -48,7 +48,7 @@ function load_assets(assets_desc){
         for(let asset_name in asset_group){
             if(asset_name == loader_name) // skip the loader function
                 continue;
-            let promise = loader(asset_name, asset_group[asset_name]);
+            let promise = loader(asset_group_name, asset_name, asset_group[asset_name]);
             console.assert(promise);
             console.assert(promise instanceof Promise);
             promises.push(promise);
@@ -68,12 +68,27 @@ function load_assets(assets_desc){
     });
 }
 
-function dummy_loader(name, path){
+function dummy_loader(group_name, name, path){
     return new Promise((resolve)=>{
         console.log( `dummy loading: ${name} => ${path}` );
-        let result = { dummy : {} };
-        result.dummy[name] = { source: path };
-        return result;
+        let result = {};
+        result[group_name] = {};
+        result[group_name][name] = { source: path };
+        resolve(result);
     });
 }
 
+function image_loader(group_name, name, path){
+    return new Promise((resolve)=>{
+        console.log( `image loading: ${name} => ${path} ...` );
+        let img = document.createElement("img");
+        let result = {};
+        result[group_name] = {};
+        result[group_name][name] = img;
+        img.onload = ()=>{
+            console.log( `image loading: ${name} => ${path} - DONE` );
+            resolve(result);
+        };
+        img.src = path; // Starts the loading.
+    });
+}

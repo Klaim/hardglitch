@@ -25,6 +25,10 @@ function start() {
 
 var game_assets = {
   images : {
+    asset_loader : assets.image_loader,
+    player: "./images/warrior.png"
+  },
+  dummy : {
     asset_loader : assets.dummy_loader,
     player: "./images/warrior.png"
   }
@@ -54,5 +58,7 @@ function drawEverything() {
 window.onload = async function() {
   graphics.initialize();
   game_assets = await assets.load_assets(game_assets);
+  console.log(`ASSETS: ${JSON.stringify(game_assets)}`);
+  test_init();
   start();
 }

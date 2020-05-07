@@ -59,9 +59,16 @@ function load_assets(assets_desc){
         .then((all_loaded_assets)=>{ // We managed to load all the assets.
             // Merge all resulting objects together to form one object.
             let all_assets = {};
-            all_loaded_assets.forEach(asset_data => {
-                all_assets = Object.assign(all_assets, asset_data);
+            all_loaded_assets.forEach(asset => {
+                console.log(`Asset: ${JSON.stringify(asset)}`);
+                for (const asset_group_name in asset) {
+                    let asset_data = asset[asset_group_name];
+                    if(!all_assets[asset_group_name])
+                        all_assets[asset_group_name] = {};
+                    all_assets[asset_group_name] = Object.assign(all_assets[asset_group_name], asset_data);
+                }
             });
+
             return all_assets;
         },(reason)=>{ // if there is any error
             throw "Failed to load assets: " + reason;

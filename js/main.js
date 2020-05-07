@@ -26,21 +26,23 @@ function start() {
 var game_assets = { // Each path in this object will be replaced by an actual asset.
   images : {
     asset_loader : assets.image_loader,
-    player: "./images/warrior.png"
-  },
-  dummy : {
-    asset_loader : assets.dummy_loader,
-    player: "./images/warrior.png"
+    warrior: "./images/warrior.png",
+    door : "./images/world_door.png",
+    goal : "./images/world_goal.png",
+    ground : "./images/world_ground.png",
+    key : "./images/world_key.png",
+    wall : "./images/world_wall.png"
   }
 };
 
 let sprite = new graphics.Sprite();
+let tile_grid = new graphics.TileGrid();
 let some_value = -99999.0;
 
 function test_init(){
   sprite.position.x = 200.0;
   sprite.position.y = 100.0;
-  sprite.source_image = game_assets.images.player;
+  sprite.source_image = game_assets.images.warrior;
 }
 
 function updateEverything() {
@@ -52,6 +54,7 @@ function updateEverything() {
 
 function drawEverything() {
   graphics.clear();
+  tile_grid.draw();
   sprite.draw();
 }
 

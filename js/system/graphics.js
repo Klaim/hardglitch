@@ -6,6 +6,7 @@ export {
   initialize,
   clear,
   Sprite,
+  TileGrid,
 };
 
 import * as spatial from "./spatial.js"
@@ -25,7 +26,7 @@ class Sprite {
   draw(){ // TODO: take a camera into account
     if(this.source_image){
       // TODO: complete by using all the sprite info
-      canvasContext.save();
+      canvasContext.save(); // TODO : this should be done by the caller, probably
       canvasContext.translate(this.transform.position.x, this.transform.position.y);
       canvasContext.rotate(this.transform.orientation.degrees); // TODO: check if t's radian or degrees
       // canvasContext.drawImage(this.source_image,this.size.width,this.size.height);
@@ -34,10 +35,29 @@ class Sprite {
     } else {
       // We don't have an image so we draw a colored rectangle instead.
       const empty_sprite_color = "grey"; // TODO: use a proper color, maybe fushia
-      colorRect(new spatial.Rectangle( { position: this.position, size: this.size } ));
+      colorRect(new spatial.Rectangle( { position: this.position, size: this.size } ), empty_sprite_color);
     }
   }
 };
+
+// 2D grid of sprites to display as one block.
+// Allows opportunities for optimization by generating one sprite
+// with the part of the grid we actually need to display.
+class TileGrid
+{
+  background_color = "blue"; // Color displayed where there is no sprite in the grid.
+
+  constructor(info = {}){
+
+  }
+
+  draw(){ // TODO: take a camera into account
+    // TODO: write a proper implementation :P
+    colorRect(new spatial.Rectangle( { position: {x:0, y:0}, size: canvas.size } ), this.background_color);
+  }
+
+};
+
 
 function initialize(){
   if(canvasContext || canvas)

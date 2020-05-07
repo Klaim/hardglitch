@@ -8,44 +8,76 @@ import * as graphics from "./system/graphics.js";
 
 import { assets } from "./game_assets.js";
 import { Game } from "./game.js";
+import { Vector2 } from "./system/spatial.js";
 
-export { View };
+export { GameView };
 
-class View{
+const PIXELS_PER_TILES_SIDE = 80;
+
+// Return a vector in the graphic-world by interpreting a game-world position.
+function graphic_position(vec2){
+    return new Vector2( { x: vec2.x * PIXELS_PER_TILES_SIDE
+                        , y: vec2.y * PIXELS_PER_TILES_SIDE
+                        });
+}
+
+
+// Representation of a body.
+class BodyView {
+    constructor(body){
+        console.assert(body instanceof Body);
+        this.body = body;
+
+        this.sprite = new Sprite();
+        this.sprite.source_image = assets.images.warrior;
+
+        this.some_value = -99999.0;
+    }
+
+    update(){
+        this.sprite.position = graphic_position(this.body.position);
+        this.some_value += 0.5;
+        const some_direction = {x:Math.sin(this.some_value), y:Math.cos(this.some_value)};
+        this.sprite.position = this.sprite.position.translate(some_direction);
+    }
+
+    render_graphics(){
+        this.sprite.draw();
+    }
+};
+
+class GameView {
+    tile_grid = new graphics.TileGrid();
+    body_views = [];
 
     constructor(game){
         console.assert(game instanceof Game);
         this.game = game;
-
-        ////////////////////////////////////////////////
-        // TEST SETUP - COMPLETELY TEMPORARY
-        this.sprite = new graphics.Sprite();
-        this.tile_grid = new graphics.TileGrid();
-        this.some_value = -99999.0;
-
-        this.sprite.position.x = 200.0;
-        this.sprite.position.y = 100.0;
-        this.sprite.source_image = assets.images.warrior;
-        //////////////////////////////////////////////
+        this.reset();
     }
 
     update(){
-        ////////////////////////////////////////////////
-        // TEST SETUP - COMPLETELY TEMPORARY
-        this.some_value += 0.5;
-        const some_direction = {x:Math.sin(this.some_value), y:Math.cos(this.some_value)};
-        this.sprite.position = this.sprite.position.translate(some_direction);
-        ////////////////////////////////////////////////
+        this.body_views.forEach(body_view => {
+            body_view.update();
+        });
     }
 
     render_graphics(){
-        ////////////////////////////////////////////////
-        // TEST SETUP - COMPLETELY TEMPORARY
         this.tile_grid.draw();
-        this.sprite.draw();
-        //////////////////////////////////////////////
+        this.body_views.forEach(body_view => {
+            body_view.render_graphics();
+        });
     }
 
+    // Re-interpret the game's state from scratch.
+    reset(){
+        // TODO: reset the tiles
+
+        this.body_views = [];
+        this.game.world.bodies.forEach(body => {
+            this.body_views.push(new BodyView(body));
+        });
+    }
 };
 
 

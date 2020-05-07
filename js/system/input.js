@@ -1,9 +1,9 @@
-// This file contains code that handle input and provide 
+// This file contains code that handle input and provide
 // tools to translate input to actions.
 
 
 export {
-  initInput
+  initialize
 };
 
 // keyboard keycode constants, determined by printing out evt.keyCode from a key handler
@@ -16,34 +16,18 @@ const KEY_LETTER_A = 65;
 const KEY_LETTER_S = 83;
 const KEY_LETTER_D = 68;
 
-function initInput(player) {
+function initialize(on_key_released) {
 
   function keyPressed(evt) {
-    setKeyHoldState(evt.keyCode, player, true);
     evt.preventDefault(); // without this, arrow keys scroll the browser!
   }
 
   function keyReleased(evt) {
-    setKeyHoldState(evt.keyCode, player, false);
+    on_key_released();
   }
 
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
 
-  player.setupControls(KEY_UP_ARROW,KEY_RIGHT_ARROW,KEY_DOWN_ARROW,KEY_LEFT_ARROW);
 }
 
-function setKeyHoldState(thisKey, thisPlayer, setTo) {
-  if(thisKey == thisPlayer.controlKeyForNorth) {
-    thisPlayer.keyHeld_North = setTo;
-  }
-  if(thisKey == thisPlayer.controlKeyForEast) {
-    thisPlayer.keyHeld_East = setTo;
-  }
-  if(thisKey == thisPlayer.controlKeyForSouth) {
-    thisPlayer.keyHeld_South = setTo;
-  }
-  if(thisKey == thisPlayer.controlKeyForWest) {
-    thisPlayer.keyHeld_West = setTo;
-  }
-}

@@ -10,20 +10,15 @@ export { Game }
 // Abstract but complete representation of a game.
 // Create this object for each new game.
 // Make it visible using a GameView.
-//
-// TODO: make this serializable, to allow saving it?
 class Game {
-    turn_count = 0;
-    world = new concepts.World();
     last_turn_info = null;
-    __turn_sequence = turns.execute_turns_until_players_turn(this.world);
 
-    constructor(){
-
+    constructor(world){
+        this.world = world ? world : new concepts.World();
+        this.__turn_sequence = turns.execute_turns_until_players_turn(this.world);
     }
 
-    update() {
-        ++turn_count;
+    update_until_player_turn() {
         last_turn_info = this.__turn_sequence.next().value;
         return last_turn_info;
     }

@@ -3,16 +3,18 @@
 
 // save the canvas for dimensions, and its 2d context for drawing to it
 import * as graphics from "./system/graphics.js";
-import * as game_assets from "./game_assets.js";
+import { load_all_assets } from "./game_assets.js";
 import { Game } from "./game.js";
-import { View } from "./game_view.js";
+import { GameView } from "./game_view.js";
+
+import * as input from "./system/input.js";
 
 let current_game = null;
 let current_view = null;
 
 window.onload = async function() {
   graphics.initialize();
-  await game_assets.load_all_assets();
+  await load_all_assets();
 
   new_game(); // TODO : call this function only once we start a new game.
 
@@ -36,10 +38,11 @@ function update_everything() {
 
 function draw_everything() {
   graphics.clear();
-  current_view.render_graphics();
+  if(current_view)
+    current_view.render_graphics();
 }
 
 function new_game() {
   current_game = new Game();
-  current_view = new View(current_game);
+  current_view = new GameView(current_game);
 }

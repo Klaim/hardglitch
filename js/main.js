@@ -42,7 +42,7 @@ function test_init(){
 }
 
 function updateEverything() {
-  some_value += 0.01;
+  some_value += 0.5;
   const some_direction = {x:Math.sin(some_value), y:Math.cos(some_value)};
   sprite.position = sprite.position.translate(some_direction);
 }

@@ -38,7 +38,7 @@ class View{
         ////////////////////////////////////////////////
     }
 
-    render(){
+    render_graphics(){
         ////////////////////////////////////////////////
         // TEST SETUP - COMPLETELY TEMPORARY
         this.tile_grid.draw();

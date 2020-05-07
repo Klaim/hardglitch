@@ -10,33 +10,36 @@ import { View } from "./game_view.js";
 let current_game = null;
 let current_view = null;
 
+window.onload = async function() {
+  graphics.initialize();
+  await game_assets.load_all_assets();
+
+  new_game(); // TODO : call this function only once we start a new game.
+
+  start();
+}
+
 function start() {
   // these next few lines set up our game logic and render cycle.
   var framesPerSecond = 60;
   setInterval(function() {
-      updateEverything();
-      drawEverything();
+      update_everything();
+      draw_everything();
     }, 1000/framesPerSecond);
 
   console.log("GAME READY - STARTED");
 }
 
-window.onload = async function() {
-  graphics.initialize();
-  await game_assets.load_all_assets();
-
-  current_game = new Game();
-  current_view = new View(current_game);
-
-  start();
-}
-
-function updateEverything() {
+function update_everything() {
   current_view.update();
 }
 
-
-function drawEverything() {
+function draw_everything() {
   graphics.clear();
-  current_view.render();
+  current_view.render_graphics();
+}
+
+function new_game() {
+  current_game = new Game();
+  current_view = new View(current_game);
 }

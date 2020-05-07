@@ -33,7 +33,7 @@ function* execute_turns_until_players_turn(world) {
         let possible_actions = world.gather_possible_actions_from_rules(agent);
         let action = agent.decide_next_action(possible_actions);
 
-        if(!action){ // No decision taken? Only players can hesitate!!!!
+        if(action == null){ // No decision taken? Only players can hesitate!!!!
             // This is a player: let the player decide what to do (they will store the action in the world state).
             yield new PlayerTurn(world, events, agent, possible_actions); // Give back the control and the list of events done since last turn.
             events = []; // Start a new sequence of events until we reach next player turn.

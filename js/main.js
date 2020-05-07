@@ -13,7 +13,7 @@ let turn_sequence = execute_turns_until_players_turn(world);
 
 
 function start() {
-  // these next few lines set up our game logic and render to happen 30 times per second
+  // these next few lines set up our game logic and render cycle.
   var framesPerSecond = 60;
   setInterval(function() {
       updateEverything();
@@ -24,8 +24,8 @@ function start() {
 }
 
 var game_assets = { // Each path in this object will be replaced by an actual asset.
-  images : {
-    asset_loader : assets.image_loader,
+  images : { // group "images"
+    asset_loader : assets.image_loader, // This is the function that will be used to convert the following data into usable objects.
     warrior: "./images/warrior.png",
     door : "./images/world_door.png",
     goal : "./images/world_goal.png",

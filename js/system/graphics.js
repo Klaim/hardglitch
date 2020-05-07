@@ -45,7 +45,7 @@ class Sprite {
 // with the part of the grid we actually need to display.
 class TileGrid
 {
-  background_color = "blue"; // Color displayed where there is no sprite in the grid.
+  background_color = "orange"; // Color displayed where there is no sprite in the grid.
 
   constructor(info = {}){
 
@@ -53,7 +53,7 @@ class TileGrid
 
   draw(){ // TODO: take a camera into account
     // TODO: write a proper implementation :P
-    colorRect(new spatial.Rectangle( { position: {x:0, y:0}, size: canvas.size } ), this.background_color);
+    colorRect(new spatial.Rectangle({ position: {x:0, y:0}, size: {x: canvas.width, y: canvas.height }}) , this.background_color);
   }
 
 };

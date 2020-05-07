@@ -37,7 +37,7 @@ class Event{
 };
 
 
-// Agents are entities that can take decitions and produce actions.
+// Agents are entities that can take decisions and produce actions.
 class Agent {
 
     action_points_left = 0;

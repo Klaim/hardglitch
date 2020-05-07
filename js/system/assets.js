@@ -1,3 +1,8 @@
+// This file provides a system to load arbitrary assets
+// and convert them to usable objects, depending on the
+// loader associated with assets.
+// If you want to add something specific to the game, prefer doing so in js/assets.js
+
 
 export {
     load_assets,

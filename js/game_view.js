@@ -6,4 +6,8 @@
 
 import * as concepts from "./core/concepts.js";
 
+export{ render }
+
+
+
 

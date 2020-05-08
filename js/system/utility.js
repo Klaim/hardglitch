@@ -1,4 +1,4 @@
-export { rotate_array }
+export { rotate_array, random_sample }
 
 
 // Rotates the elements of an array-like object.

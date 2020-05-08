@@ -70,7 +70,7 @@ function load_assets(assets_desc){
                     let asset_data = asset[asset_group_name];
                     if(!all_assets[asset_group_name])
                         all_assets[asset_group_name] = {};
-                    all_assets[asset_group_name] = Object.assign(all_assets[asset_group_name], asset_data);
+                    all_assets[asset_group_name] = { ...all_assets[asset_group_name], ...asset_data };
                 }
             });
 

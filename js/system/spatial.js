@@ -1,12 +1,10 @@
 
-export { 
+export {
     Vector2, Vector2_origin, Vector2_unit_x, Vector2_unit_y,
-    Transform, 
-    Angle, 
-    Rectangle 
+    Transform,
+    Angle,
+    Rectangle
 };
-
-console.debug("KIKOO");
 
 /////////////////////////////////////////////
 // Source: http://cwestblog.com/2012/11/12/javascript-degree-and-radian-conversion/
@@ -51,7 +49,7 @@ class Angle {
         if(degrees)
             this.angle_radian = Math.radian(degrees);
     }
-    
+
     get degrees() { return Math.degrees(this.angle_radian); }
     get radian() { return this.angle_radian; }
 };

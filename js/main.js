@@ -3,11 +3,15 @@
 
 // save the canvas for dimensions, and its 2d context for drawing to it
 import * as graphics from "./system/graphics.js";
-import { load_all_assets } from "./game_assets.js";
+import { load_all_assets } from "./game-assets.js";
 import { Game } from "./game.js";
-import { GameView } from "./game_view.js";
+import { GameView } from "./game-view.js";
 
 import * as input from "./system/input.js";
+import { Body } from "./core/concepts.js";
+import { Wait } from "./rules-basic.js";
+
+import { make_test_world } from "./scratchpad.js";
 
 let current_game = null;
 let current_view = null;
@@ -29,6 +33,11 @@ function start() {
       draw_everything();
     }, 1000/framesPerSecond);
 
+  input.initialize(()=>{
+    const player_action = new Wait();
+    current_game.update_until_player_turn(player_action);
+  });
+
   console.log("GAME READY - STARTED");
 }
 
@@ -43,6 +52,6 @@ function draw_everything() {
 }
 
 function new_game() {
-  current_game = new Game();
+  current_game = new Game(make_test_world());
   current_view = new GameView(current_game);
 }

@@ -24,13 +24,21 @@ class PlayerTurn
 function* execute_turns_until_players_turn(world) {
     console.assert(world instanceof concept.World);
 
-    let looping_agent_sequence = loop_all_agents();
+    let looping_agent_sequence = loop_all_agents(world); // infinite sequence of agents.
     let events = []; // TODO: format of events
 
-    for(let agent in looping_agent_sequence){
-        console.assert(agent instanceof concept.Agent);
+    for(let agent of looping_agent_sequence){ // Keep in mind that this is a virtually infinite sequence of turns.
 
-        let possible_actions = world.gather_possible_actions_from_rules(agent);
+        if(agent == null) { // There is no agent!
+            // In this situation, let the player take control, but don't allow any action.
+            yield new PlayerTurn(world, events, agent, []);
+            events = []; // Start a new sequence of events until we reach next player turn.
+            continue; // no need to check for further actions.
+        }
+
+        console.assert(agent instanceof concept.Agent); // At this point, it have to be an Agent.
+
+        const possible_actions = world.gather_possible_actions_from_rules(agent);
         let action = agent.decide_next_action(possible_actions);
 
         if(action == null){ // No decision taken? Only players can hesitate!!!!
@@ -40,21 +48,26 @@ function* execute_turns_until_players_turn(world) {
             action = world.player_action; // Extract the player action from the world state.
         }
 
+        console.log(`ACTION: ${action}`);
         // Apply the selected action.
-        let action_events = action.execute(world, agent);
+        const action_events = action.execute(world, agent);
         events.push(...action_events);
 
         // Update the world according to it's rules.
-        let rules_events = world.apply_rules();
+        const rules_events = world.apply_rules();
         events.push(...rules_events);
     }
 }
 
+// Generates an infinite sequence of agents - TODO: specify an order!
 function *loop_all_agents(world){
     console.assert(world instanceof concept.World);
-    while(world.agents.length > 0){
-        yield world.agents[0];
-        rotate_array(world.agents);
+    while(true){ // The turn sequence is virtually infinite. We can stop it by not continuing after a player's turn.
+        while(world.agents.length > 0){
+            yield world.agents[0];
+            rotate_array(world.agents);
+        }
+        yield null; // No agents exists
     }
 }
 

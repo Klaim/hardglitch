@@ -12,6 +12,7 @@ export {
     Event,
     Action,
     Agent,
+    Player,
     Rule,
     Object,
     Body,
@@ -50,9 +51,17 @@ class Agent {
     // `possible_actions` is a map of { "ActionName" : ActionType } possibles.
     // Therefore one could just instantiate an action with `new possible_actions["Move"]` etc.
     decide_next_action(possible_actions){
-        return null; // By default, let the player decide.
+        throw "decide_next_action not implemented";
     }
 };
+
+// Special Agent representing the player.
+class Player extends Agent {
+
+    decide_next_action(possible_actions){
+        return null; // By default, let the player decide.
+    }
+}
 
 // Rules are transformations and checks that apply all the time as long
 // as they exist.
@@ -120,7 +129,7 @@ class World
     }
 
     // Automatically sort out how to store the thing being added to this world.
-    add(thing){
+    add(thing){ // TODO: kill this thing with fire
         if(thing instanceof Object){
             this.objects.push(thing);
             // TODO: add here to some spatial partitionning system
@@ -150,8 +159,9 @@ class World
     gather_possible_actions_from_rules(agent){
         console.assert(agent instanceof Agent);
         let possible_actions = {};
-        for(let rule in this.rules){
-            possible_actions.assign(rule.get_actions_for(agent, this));
+        for(const rule of this.rules){
+            const actions_from_rule = rule.get_actions_for(agent, this);
+            possible_actions = { ...possible_actions, ...actions_from_rule };
         }
         return possible_actions;
     }
@@ -159,8 +169,8 @@ class World
     // Apply all rules to update this world according to them.
     // Should be called after each turn of an agent.
     apply_rules(){
-        let events = [];
-        for(let rule in this.rules){
+        const events = [];
+        for(const rule of this.rules){
             events.push(...(rule.update_world_after_turn(this)));
         }
         return events;

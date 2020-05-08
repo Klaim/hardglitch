@@ -1,9 +1,10 @@
 // This file describe the assets specific to this game
 // and how to load them.
 
+export { loaded_assets as assets, load_all_assets };
+
 import * as asset_system from "./system/assets.js";
 
-export { loaded_assets as assets, load_all_assets };
 
 const game_assets = { // Description of the assets to load.
     images : { // group "images"

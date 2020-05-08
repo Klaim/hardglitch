@@ -1,7 +1,7 @@
 
 import * as concepts from "./core/concepts.js";
 
-export { MovementRules, Move, Moved, Waited }
+export { MovementRules, Move, Moved }
 
 class Moved extends concepts.Event {
     constructor(body, from_pos, to_pos) {

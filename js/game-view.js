@@ -4,13 +4,16 @@
 // We interpret events to animate the view of the world.
 // The code here is just the skeleton to build over the actual representation.
 
+export { GameView };
+
 import * as graphics from "./system/graphics.js";
 
-import { assets } from "./game_assets.js";
+import * as concepts from "./core/concepts.js";
+
+import { assets } from "./game-assets.js";
 import { Game } from "./game.js";
 import { Vector2 } from "./system/spatial.js";
 
-export { GameView };
 
 const PIXELS_PER_TILES_SIDE = 80;
 
@@ -25,10 +28,10 @@ function graphic_position(vec2){
 // Representation of a body.
 class BodyView {
     constructor(body){
-        console.assert(body instanceof Body);
+        console.assert(body instanceof concepts.Body);
         this.body = body;
 
-        this.sprite = new Sprite();
+        this.sprite = new graphics.Sprite();
         this.sprite.source_image = assets.images.warrior;
 
         this.some_value = -99999.0;
@@ -53,6 +56,12 @@ class GameView {
     constructor(game){
         console.assert(game instanceof Game);
         this.game = game;
+        this.reset();
+    }
+
+    interpret_last_turn_events(){
+        let events = this.game.last_turn_info.events; // turns.PlayerTurn
+        // TEMPORARY: for now, just reset to the new state
         this.reset();
     }
 

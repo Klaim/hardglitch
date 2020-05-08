@@ -1,16 +1,17 @@
 // This is where Klaim test some ideas.
 
-export { SomeAI };
+export { make_test_world };
 
 import * as concepts from "./core/concepts.js";
 import { Wait, BasicRules } from "./rules-basic.js";
 import { MovementRules } from "./rules-movement.js";
+import {random_sample} from "./system/utility.js";
 
 class SomeAI extends concepts.Agent {
     decide_next_action(possible_actions) {
         // Just picking a random action is a perfectly valid strategy, lol
         let random_action = random_sample(Object.values(possible_actions));
-        if(!random_action) { // no action found.
+        if(random_action == null) { // no action found.
             // In this case just wait:
             return new Wait(this);
         }
@@ -18,38 +19,46 @@ class SomeAI extends concepts.Agent {
     }
 };
 
-class Ennemy extends SomeAI {
+class Enemy extends SomeAI {
 };
 
 function make_test_world(){
-    let world = new concepts.World();
+    const world = new concepts.World();
 
-    world.add_rule( new BasicRules() );
-    world.add_rule( new MovementRules() );
+    world.add( new BasicRules() );
+    world.add( new MovementRules() );
 
+    const player = new concepts.Player();
+
+    const enemy_body = new concepts.Body();
+    const enemy =  new Enemy(enemy_body);
+
+    world.add(player);
+    world.add(enemy);
+    world.add(enemy_body);
 
     return world;
 }
 
 
-entity = {          // every field is optional
-    id : {},        // id that will be associated to the components
-    graphics : {},  // component, name is type
-    audio : {},     // component, name is type
-    actor : {},     // component, name is type
-    body : {},      // component, name is type
+// entity = {          // every field is optional
+//     id : {},        // id that will be associated to the components
+//     graphics : {},  // component, name is type
+//     audio : {},     // component, name is type
+//     actor : {},     // component, name is type
+//     body : {},      // component, name is type
 
-}
+// }
 
-system = {
-    required_components : ["graphics", "audio"],
-    update : function(world, graphics, audio){   }
-}
+// system = {
+//     required_components : ["graphics", "audio"],
+//     update : function(world, graphics, audio){   }
+// }
 
-ecs
+// ecs
 
-function apply_system()
+// function apply_system()
 
-function update(ecs){
+// function update(ecs){
 
-}
+// }

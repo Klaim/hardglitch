@@ -47,8 +47,8 @@ function* execute_turns_until_players_turn(world) {
             events = []; // Start a new sequence of events until we reach next player turn.
             action = world.player_action; // Extract the player action from the world state.
         }
-
-        console.log(`ACTION: ${action}`);
+        console.assert(action); // Ath this point, an action must have been defined (even if it's just Wait)
+        console.log(`ACTION: ${action.constructor.name}`);
         // Apply the selected action.
         const action_events = action.execute(world, agent);
         events.push(...action_events);

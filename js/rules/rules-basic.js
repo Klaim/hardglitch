@@ -1,4 +1,4 @@
-import * as concepts from "./core/concepts.js";
+import * as concepts from "../core/concepts.js";
 
 export { BasicRules, Wait, Waited };
 

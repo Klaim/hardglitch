@@ -4,8 +4,8 @@ export { make_test_world, next_update };
 
 import { current_game } from "./main.js";
 import * as concepts from "./core/concepts.js";
-import { Wait, BasicRules } from "./rules-basic.js";
-import { MovementRules } from "./rules-movement.js";
+import { Wait, BasicRules } from "./rules/rules-basic.js";
+import { MovementRules } from "./rules/rules-movement.js";
 import {random_sample} from "./system/utility.js";
 
 class SomeAI extends concepts.Agent {
@@ -34,13 +34,16 @@ class PlayerBody extends concepts.Body {
     }
 }
 
+
+const player = new concepts.Player();
+let possible_actions = {};
+
 function make_test_world(){
     const world = new concepts.World();
 
     world.add( new BasicRules() );
     world.add( new MovementRules() );
 
-    const player = new concepts.Player();
     player.body = new PlayerBody();
 
     const enemy_body = new concepts.Body();
@@ -55,9 +58,30 @@ function make_test_world(){
     return world;
 }
 
-function next_update(){
-    const player_action = new Wait();
-    current_game.update_until_player_turn(player_action);
+function select_player_action(keycode){
+    const KEY_LEFT_ARROW = 37;
+    const KEY_UP_ARROW = 38;
+    const KEY_RIGHT_ARROW = 39;
+    const KEY_DOWN_ARROW = 40;
+    let action = null;
+    switch (keycode) {
+        case KEY_UP_ARROW:      { action = possible_actions.move_north; break; }
+        case KEY_DOWN_ARROW:    { action = possible_actions.move_south; break; }
+        case KEY_RIGHT_ARROW:   { action = possible_actions.move_east; break; }
+        case KEY_LEFT_ARROW:    { action = possible_actions.move_west; break; }
+        default:
+            break;
+    }
+    if(!action){
+        action = possible_actions.wait;
+    }
+    return action;
+}
+
+function next_update(event){
+    let player_action = select_player_action(event.keyCode);
+    const turn_info = current_game.update_until_player_turn(player_action);
+    possible_actions = turn_info.possible_actions;
 }
 
 // entity = {          // every field is optional

@@ -23,7 +23,7 @@ function initialize(on_key_released) {
   }
 
   function keyReleased(evt) {
-    on_key_released();
+    on_key_released(evt);
   }
 
   document.addEventListener("keydown", keyPressed);

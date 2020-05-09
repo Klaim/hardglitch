@@ -15,7 +15,7 @@ import { Game } from "./game.js";
 import { Vector2 } from "./system/spatial.js";
 
 
-const PIXELS_PER_TILES_SIDE = 80;
+const PIXELS_PER_TILES_SIDE = 50;
 
 // Return a vector in the graphic-world by interpreting a game-world position.
 function graphic_position(vec2){

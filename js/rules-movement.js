@@ -5,6 +5,7 @@ export { MovementRules, Move, Moved }
 
 class Moved extends concepts.Event {
     constructor(body, from_pos, to_pos) {
+        super();
         this.body = body;
         this.from_pos = from_pos;
         this.to_pos = to_pos;
@@ -15,14 +16,16 @@ class Moved extends concepts.Event {
 class Move extends concepts.Action {
 
     constructor(new_position){
-        this.new_position;
+        console.assert(new_position);
+        super();
+        this.new_position = new_position;
     }
 
     execute(world, agent) {
         console.assert(agent.body);
-        let initial_pos = agent.body.position;
-        agent.body.position = new_position;
-        return [ new Moved(agent.body, initial_pos, new_position) ];
+        const initial_pos = agent.body.position;
+        agent.body.position = this.new_position;
+        return [ new Moved(agent.body, initial_pos, this.new_position) ];
     }
 };
 
@@ -37,13 +40,13 @@ class MovementRules extends concepts.Rule {
 
         if (agent.body) {
             // TODO: check if we CAN move (or not) in each direction, add actions accordingly
-            let current_pos = agent.body.position;
+            const current_pos = agent.body.position;
             console.assert(current_pos);
 
-            actions.move_left   = new Move(current_pos.left);
-            actions.move_right  = new Move(current_pos.right);
-            actions.move_up     = new Move(current_pos.up);
-            actions.move_down   = new Move(current_pos.down);
+            actions.move_west   = new Move(current_pos.west);
+            actions.move_east  = new Move(current_pos.east);
+            actions.move_north     = new Move(current_pos.north);
+            actions.move_south   = new Move(current_pos.south);
         }
 
         return actions;

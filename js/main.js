@@ -1,5 +1,6 @@
 // This file contains the main loop and initialization code for this game.
 
+export { current_game, current_view }
 
 // save the canvas for dimensions, and its 2d context for drawing to it
 import * as graphics from "./system/graphics.js";
@@ -8,10 +9,8 @@ import { Game } from "./game.js";
 import { GameView } from "./game-view.js";
 
 import * as input from "./system/input.js";
-import { Body } from "./core/concepts.js";
-import { Wait } from "./rules-basic.js";
 
-import { make_test_world } from "./scratchpad.js";
+import { make_test_world, next_update } from "./scratchpad.js";
 
 let current_game = null;
 let current_view = null;
@@ -33,10 +32,7 @@ function start() {
       draw_everything();
     }, 1000/framesPerSecond);
 
-  input.initialize(()=>{
-    const player_action = new Wait();
-    current_game.update_until_player_turn(player_action);
-  });
+  input.initialize(next_update);
 
   console.log("GAME READY - STARTED");
 }

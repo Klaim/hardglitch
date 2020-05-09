@@ -32,7 +32,7 @@ class Game {
         console.log(`NEW PLAYER TURN: ${this.player_turn_count}`);
         console.log(`Events Since Last Turn: `);
         for(const event of this.last_turn_info.events){
-            console.log(` - ${event}`);
+            console.log(` - ${event.constructor.name}`);
         }
         console.log(`Possible Actions: `);
         for(const action_name in this.last_turn_info.possible_actions){

@@ -40,13 +40,16 @@ class MovementRules extends concepts.Rule {
 
         if (agent.body) {
             // TODO: check if we CAN move (or not) in each direction, add actions accordingly
+            // TEMPORARY HIDDEN WALLS:
+            const boundaries = { top : 0, left : 0, bottom : 10, right : 14 };
+
             const current_pos = agent.body.position;
             console.assert(current_pos);
 
-            actions.move_west   = new Move(current_pos.west);
-            actions.move_east  = new Move(current_pos.east);
-            actions.move_north     = new Move(current_pos.north);
-            actions.move_south   = new Move(current_pos.south);
+            if( current_pos.x > boundaries.left )   actions.move_west  = new Move(current_pos.west);
+            if( current_pos.x < boundaries.right )  actions.move_east  = new Move(current_pos.east);
+            if( current_pos.y > boundaries.top )    actions.move_north = new Move(current_pos.north);
+            if( current_pos.y < boundaries.bottom ) actions.move_south = new Move(current_pos.south);
         }
 
         return actions;

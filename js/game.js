@@ -3,6 +3,7 @@
 
 import * as concepts from "./core/concepts.js";
 import * as turns from "./core/action-turn.js";
+import { Wait } from "./rules/rules-basic.js";
 
 export { Game }
 
@@ -17,11 +18,14 @@ class Game {
     constructor(world){
         console.assert(world instanceof concepts.World);
         this.world = world ? world : new concepts.World();
+
+        // Prepare the game turns to be ready to play (player's turn)
         this.__turn_sequence = turns.execute_turns_until_players_turn(this.world);
+        this.update_until_player_turn(new Wait());
     }
 
     update_until_player_turn(next_player_action) {
-        this.world.player_action = next_player_action; // The player action will be used in solving turns.
+        this.world.set_player_action(next_player_action); // The player action will be used in solving turns.
 
         console.log(`SOLVING TURNS ...`);
         const turn_iter = this.__turn_sequence.next();

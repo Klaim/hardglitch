@@ -6,7 +6,7 @@ import { current_game } from "./main.js";
 import * as concepts from "./core/concepts.js";
 import { Wait, BasicRules } from "./rules/rules-basic.js";
 import { MovementRules } from "./rules/rules-movement.js";
-import {random_sample} from "./system/utility.js";
+import {random_sample, random_int} from "./system/utility.js";
 
 class SomeAI extends concepts.Agent {
 
@@ -36,7 +36,6 @@ class PlayerBody extends concepts.Body {
 
 
 const player = new concepts.Player();
-let possible_actions = {};
 
 function make_test_world(){
     const world = new concepts.World();
@@ -45,20 +44,23 @@ function make_test_world(){
     world.add( new MovementRules() );
 
     player.body = new PlayerBody();
-
-    const enemy_body = new concepts.Body();
-    const enemy =  new Enemy(enemy_body);
-    enemy_body.position.x = 3;
-
     world.add(player);
     world.add(player.body);
-    world.add(enemy);
-    world.add(enemy_body);
+
+    for(let i = 0; i < 10; ++i){
+        const enemy_body = new concepts.Body();
+        const enemy =  new Enemy(enemy_body);
+        enemy_body.position.x = random_int(0, 10);
+        enemy_body.position.y = random_int(0, 10);
+        world.add(enemy);
+        world.add(enemy_body);
+    }
 
     return world;
 }
 
 function select_player_action(keycode){
+    const possible_actions = current_game.last_turn_info.possible_actions;
     const KEY_LEFT_ARROW = 37;
     const KEY_UP_ARROW = 38;
     const KEY_RIGHT_ARROW = 39;
@@ -80,8 +82,7 @@ function select_player_action(keycode){
 
 function next_update(event){
     let player_action = select_player_action(event.keyCode);
-    const turn_info = current_game.update_until_player_turn(player_action);
-    possible_actions = turn_info.possible_actions;
+    current_game.update_until_player_turn(player_action);
 }
 
 // entity = {          // every field is optional

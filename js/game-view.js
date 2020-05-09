@@ -7,6 +7,7 @@
 export { GameView };
 
 import * as graphics from "./system/graphics.js";
+import { random_int } from "./system/utility.js";
 
 import * as concepts from "./core/concepts.js";
 
@@ -19,9 +20,9 @@ const PIXELS_PER_TILES_SIDE = 50;
 
 // Return a vector in the graphic-world by interpreting a game-world position.
 function graphic_position(vec2){
-    return new Vector2( { x: vec2.x * PIXELS_PER_TILES_SIDE
-                        , y: vec2.y * PIXELS_PER_TILES_SIDE
-                        });
+    return new Vector2({ x: vec2.x * PIXELS_PER_TILES_SIDE
+                       , y: vec2.y * PIXELS_PER_TILES_SIDE
+                       });
 }
 
 
@@ -34,7 +35,7 @@ class BodyView {
         this.sprite = new graphics.Sprite();
         this.sprite.source_image = assets.images.warrior;
 
-        this.some_value = -99999.0;
+        this.some_value = -99999.0 + random_int(0, 7);
     }
 
     update(){
